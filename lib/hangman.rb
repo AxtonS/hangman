@@ -6,7 +6,7 @@ def random_word
   words.each do |word|
     valid_words.push(word) if word.length > 4 && word.length < 13
   end
-  valid_words.sample
+  valid_words.sample.downcase
 end
 
 def display_hangman(guesses)
@@ -48,15 +48,30 @@ end
 secret_word = random_word.chomp.split('')
 guesses_remaining = 6
 correct_letters = Array.new(secret_word.length, '_')
+used_letters = []
 puts 'Welcome to Hangman!'
 while guesses_remaining >= 0
   display_hangman(guesses_remaining)
   puts correct_letters.join(' ')
-  puts 'Please input a letter to guess:'
-  guess = gets.chomp
-  while guess.length > 1 || guess.to_i.to_s == guess
-    puts 'Please enter a valid letter:'
-    guess = gets.chomp
+
+  if guesses_remaining.zero?
+    puts 'You are out of guesses!'
+    return
+  elsif secret_word == correct_letters
+    puts 'You win!'
+    return
+  else
+    puts 'Please input a letter to guess:'
+    guess = gets.chomp.downcase
+    while guess.length > 1 || guess.to_i.to_s == guess || used_letters.include?(guess)
+      puts 'Please enter a valid letter:'
+      guess = gets.chomp.downcase
+    end
+    used_letters.push(guess)
+    if secret_word.include?(guess)
+      correct_letters = compare_guess(secret_word, guess, correct_letters)
+    else
+      guesses_remaining -= 1
+    end
   end
-  correct_letters = compare_guess(secret_word, guess, correct_letters)
 end

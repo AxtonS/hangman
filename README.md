@@ -17,3 +17,4 @@ hangman command line game built in ruby
 -Loaded the dictionary file and created an array out of the words between 5 and 12 letters long then used sample method to choose a random word  
 -Built method for displaying the hangman with remaining guesses  
 -Built method to compare the guess against the secret and save the current guesses  
+-Add game logic to end the game when you win or lose  
