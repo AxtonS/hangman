@@ -18,3 +18,4 @@ hangman command line game built in ruby
 -Built method for displaying the hangman with remaining guesses  
 -Built method to compare the guess against the secret and save the current guesses  
 -Add game logic to end the game when you win or lose  
+-Fix guess accepting non alphabet characters and coerced all letters to downcase  

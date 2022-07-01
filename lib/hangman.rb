@@ -50,6 +50,7 @@ guesses_remaining = 6
 correct_letters = Array.new(secret_word.length, '_')
 used_letters = []
 puts 'Welcome to Hangman!'
+
 while guesses_remaining >= 0
   display_hangman(guesses_remaining)
   puts correct_letters.join(' ')
@@ -63,7 +64,7 @@ while guesses_remaining >= 0
   else
     puts 'Please input a letter to guess:'
     guess = gets.chomp.downcase
-    while guess.length > 1 || guess.to_i.to_s == guess || used_letters.include?(guess)
+    while guess.length > 1 || !guess.match?(/\A[a-zA-Z]*\z/) || used_letters.include?(guess)
       puts 'Please enter a valid letter:'
       guess = gets.chomp.downcase
     end
