@@ -38,7 +38,25 @@ def display_hangman(guesses)
   end
 end
 
-secret_word = random_word
-puts secret_word
+def compare_guess(secret, guess, current)
+  secret.each_with_index do |letter, index|
+    current[index] = letter if guess == letter
+  end
+  current
+end
 
-puts display_hangman(0)
+secret_word = random_word.chomp.split('')
+guesses_remaining = 6
+correct_letters = Array.new(secret_word.length, '_')
+puts 'Welcome to Hangman!'
+while guesses_remaining >= 0
+  display_hangman(guesses_remaining)
+  puts correct_letters.join(' ')
+  puts 'Please input a letter to guess:'
+  guess = gets.chomp
+  while guess.length > 1 || guess.to_i.to_s == guess
+    puts 'Please enter a valid letter:'
+    guess = gets.chomp
+  end
+  correct_letters = compare_guess(secret_word, guess, correct_letters)
+end
