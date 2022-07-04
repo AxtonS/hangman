@@ -56,16 +56,16 @@ while guesses_remaining >= 0
   puts correct_letters.join(' ')
 
   if guesses_remaining.zero?
-    puts 'You are out of guesses!'
+    puts "\nYou are out of guesses!"
     return
   elsif secret_word == correct_letters
-    puts 'You win!'
+    puts "\nYou win!"
     return
   else
-    puts 'Please input a letter to guess:'
+    puts "\nPlease input a letter to guess:"
     guess = gets.chomp.downcase
     while guess.length > 1 || !guess.match?(/\A[a-zA-Z]*\z/) || used_letters.include?(guess)
-      puts 'Please enter a valid letter:'
+      puts "\nPlease enter a valid letter:"
       guess = gets.chomp.downcase
     end
     used_letters.push(guess)
