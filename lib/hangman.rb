@@ -10,6 +10,7 @@ def random_word
 end
 
 def display_hangman(guesses)
+  puts "\n"
   case guesses
   when 5
     puts '  O  '
