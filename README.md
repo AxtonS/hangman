@@ -1,6 +1,7 @@
 # hangman  
 
 hangman command line game built in ruby  
+if you don't have ruby installed you can try the game at https://replit.com/@AxtonSmith/hangman#.replit  
 
 ## plan  
 
