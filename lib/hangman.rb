@@ -1,5 +1,33 @@
 # frozen_string_literal: true
 
+require 'json'
+
+# class to save/load game
+class GameState
+  attr_accessor :secret_word, :guesses_remaining, :correct_letters, :used_letters
+
+  def initialize(secret_word, guesses_remaining, correct_letters, used_letters)
+    @secret_word = secret_word
+    @guesses_remaining = guesses_remaining
+    @correct_letters = correct_letters
+    @used_letters = used_letters
+  end
+
+  def save
+    JSON.dump({
+                secret_word: @secret_word,
+                guesses_remaining: @guesses_remaining,
+                correct_letters: @correct_letters,
+                used_letters: @used_letters
+              })
+  end
+
+  def load(string)
+    data = JSON.parse(string)
+    new(data['secret_word'], data['guesses_remaining'], data['correct_letters'], data['used_letters'])
+  end
+end
+
 def random_word
   valid_words = []
   words = File.readlines('dictionary.txt')
@@ -55,6 +83,23 @@ puts 'Welcome to Hangman!'
 while guesses_remaining >= 0
   display_hangman(guesses_remaining)
   puts correct_letters.join(' ')
+
+  puts "\nIf you would like to save and end your game please type 'save' and press enter"
+  save = gets.chomp.downcase
+  if save == 'save'
+    puts "\nName your save file:"
+    name = gets.chomp
+    while File.exist?("save_files/#{name}.json")
+      puts "\nThat save file already exists, please enter another:"
+      name = gets.chomp
+    end
+    game = GameState.new(secret_word, guesses_remaining, correct_letters, used_letters)
+    Dir.mkdir('save_files') unless File.exist?('save_files')
+    File.open("save_files/#{name}.json", 'w') do |file|
+      file.puts(game.save)
+    end
+    return
+  end
 
   if guesses_remaining.zero?
     puts "\nYou are out of guesses!"

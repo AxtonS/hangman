@@ -19,3 +19,4 @@ hangman command line game built in ruby
 -Built method to compare the guess against the secret and save the current guesses  
 -Add game logic to end the game when you win or lose  
 -Fix guess accepting non alphabet characters and coerced all letters to downcase  
+-Implement a save feature that writes the current game state to a JSON file  
