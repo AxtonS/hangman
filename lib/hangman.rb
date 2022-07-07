@@ -22,7 +22,7 @@ class GameState
               })
   end
 
-  def load(string)
+  def self.load(string)
     data = JSON.parse(string)
     new(data['secret_word'], data['guesses_remaining'], data['correct_letters'], data['used_letters'])
   end
@@ -80,22 +80,40 @@ correct_letters = Array.new(secret_word.length, '_')
 used_letters = []
 puts 'Welcome to Hangman!'
 
+puts "\nIf you would like to load a previously saved game to play, please type 'load' and press enter"
+if gets.chomp.downcase == 'load'
+  puts "\nPlease type one of the following save files and press enter to play:"
+  Dir.chdir('save_files')
+  puts Dir.glob('*').join("\n")
+  Dir.chdir('..')
+  file_name = gets.chomp
+
+  if File.exist?("save_files/#{file_name}")
+    game = GameState.load(File.read("save_files/#{file_name}"))
+    secret_word = game.secret_word
+    guesses_remaining = game.guesses_remaining
+    correct_letters = game.correct_letters
+    used_letters = game.used_letters
+  else
+    puts "\nWe'll start a fresh game then."
+  end
+end
+
 while guesses_remaining >= 0
   display_hangman(guesses_remaining)
   puts correct_letters.join(' ')
 
   puts "\nIf you would like to save and end your game please type 'save' and press enter"
-  save = gets.chomp.downcase
-  if save == 'save'
+  if gets.chomp.downcase == 'save'
     puts "\nName your save file:"
     name = gets.chomp
-    while File.exist?("save_files/#{name}.json")
+    while File.exist?("save_files/#{name}")
       puts "\nThat save file already exists, please enter another:"
       name = gets.chomp
     end
     game = GameState.new(secret_word, guesses_remaining, correct_letters, used_letters)
     Dir.mkdir('save_files') unless File.exist?('save_files')
-    File.open("save_files/#{name}.json", 'w') do |file|
+    File.open("save_files/#{name}", 'w') do |file|
       file.puts(game.save)
     end
     return
